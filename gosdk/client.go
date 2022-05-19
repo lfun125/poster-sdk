@@ -13,11 +13,12 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"gosdk/model"
 	"net/http"
 	"reflect"
 	"strings"
 	"time"
+
+	"github.com/lfun125/poster-sdk/gosdk/model"
 )
 
 const contentType = "application/json"
