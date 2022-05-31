@@ -127,13 +127,13 @@ func (c *Client) SetUser(openId, nickname string) (resp *model.SetUserResp, err 
 func (c *Client) unmarshal(response *http.Response, out interface{}) error {
 	if response.StatusCode != 200 {
 		var ret struct {
-			Code    string `json:"code"`
+			Code    int    `json:"code"`
 			Message string `json:"message"`
 		}
 		if err := json.NewDecoder(response.Body).Decode(&ret); err != nil {
 			return err
 		}
-		return errors.New(fmt.Sprintf("%s: %s", ret.Code, ret.Message))
+		return errors.New(fmt.Sprintf("%d: %s", ret.Code, ret.Message))
 	}
 	if err := json.NewDecoder(response.Body).Decode(out); err != nil {
 		return err
