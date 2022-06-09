@@ -19,10 +19,10 @@ type LoginResp struct {
 type SetUserArgs struct {
 	// 商户id
 	Mid string `json:"mid,omitempty"`
-	// 服务商系统的用户唯一标识
-	OpenId string `json:"open_id,omitempty"`
 	// 昵称
 	Nickname string `json:"nickname,omitempty"`
+	// 服务商系统的用户唯一标识
+	OpenId string `json:"open_id,omitempty"`
 	// 签名
 	Sign string `json:"sign,omitempty"`
 }
