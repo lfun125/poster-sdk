@@ -45,6 +45,13 @@ public class Main {
         return convertByteToHexadecimal(s);
     }
 
+    /**
+     * 解密
+     * 
+     * @param str 被加密的字符串
+     * @return
+     * @throws Exception
+     */
     public static String decrypt(String str) throws Exception {
         PrivateKey privateKey = loadPrivateKey(key);
         // RSA解密
