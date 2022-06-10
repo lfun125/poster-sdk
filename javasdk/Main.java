@@ -10,6 +10,8 @@ import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
+import javax.crypto.Cipher;
+
 public class Main {
 
     // 这是PKCS8的私钥
@@ -21,6 +23,10 @@ public class Main {
         String sign = generateSignature(data);
         // 输出字符串
         System.out.println(sign);
+        // 被加密的字符串
+        String s = "914d2f605bf098562647379eb84d9e122123de561cd93aad8c484a717800a30e3998804e7fc26772ed846e85f4147321bfd2297d83592725e4cac6248cac8120";
+        String val = decrypt(s);
+        System.out.println(val);
     }
 
     /**
@@ -37,6 +43,16 @@ public class Main {
         privateSignature.update(data.getBytes(StandardCharsets.UTF_8));
         byte[] s = privateSignature.sign();
         return convertByteToHexadecimal(s);
+    }
+
+    public static String decrypt(String str) throws Exception {
+        PrivateKey privateKey = loadPrivateKey(key);
+        // RSA解密
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] inputByte = convertHexadecimalToByte(str);
+        String outStr = new String(cipher.doFinal(inputByte));
+        return outStr;
     }
 
     /**
@@ -74,6 +90,18 @@ public class Main {
             hex += String.format("%02X", i);
         }
         return hex.toLowerCase();
+    }
+
+    public static byte[] convertHexadecimalToByte(String s) {
+        int len = s.length();
+        byte[] ans = new byte[len / 2];
+
+        for (int i = 0; i < len; i += 2) {
+            // using left shift operator on every character
+            ans[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i + 1), 16));
+        }
+        return ans;
     }
 
 }
