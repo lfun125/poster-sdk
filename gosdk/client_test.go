@@ -6,16 +6,28 @@ import (
 )
 
 func testNewClient() *Client {
-	c, err := NewClient("https://api.daishuhaibao.com", "2276907093", `-----BEGIN RSA PRIVATE KEY-----
-MIIBPQIBAAJBALBQtjwSjxB8IPBsyzKU9sAHs+Z2ybOFvbv9+suMtvSc9HtyK3Cv
-Jl8XbcUjKwO3AT8jjE+z5Aa3MDadZ9tuSlsCAwEAAQJBAK2xNXWEiu+geQqhAqR3
-34VZkT5us1FpZXq3P8QagXoDKmQMlJG0l+Evoe+l+gjsKwBn/a12srd5k8a8W4tH
-12ECIQDMSs362HdnAN3PbHDirlEr3l0DqZZXwnWlgoH1qCGxUwIhANzxIZUOJ0su
-ZBzm63xKLO73jzoj9fmFxH+z8K0yHrnZAiEAm/6G2IOQcUO1G90nOcB31PKfvdsy
-JOMlKHPGPsnaqGcCIQDYenbyCeUcN78lxmhS5oayOeOfDt8Sdiu7CD64JFSQuQIh
-AMwIiwqeF1bG6yS8/dwtDkjblV64Z1KhHnWuLXLDq8cd
+	c, err := NewClient("https://api.dev.blingok.com/", "4255512245", `
+-----BEGIN RSA PRIVATE KEY-----
+MIIBOgIBAAJBAJi2ZrZDJzlCi3fumtiDhORvuVHS5uBphVmyZXZUCHN6wYnqGONW
+zl7eWRjMpEsZb8ept80Oj/J3K6ZCnlL1YX8CAwEAAQJAeM9jtjCt6QiR2RE0ArEZ
+Ara3/tk/uK0Bx5Hv3opgHSn49vzC7rtC6OUHZsJYIDSN2KuyItBh+Fo9d8JUnWpi
+IQIhAMX7WpuTROrXMTHQuxlRQhDIRwyOz0+Ln3GLklVLcXmHAiEAxXbuFhuDFRgG
+gS2nMLjRfC7oegMDCZHjdbeUgQEe9kkCIBwH9ZE3bbeOVlHGSudPwPndUWnuwl1x
+2FZcO5DGCL/7AiABMjg9AAuqPAwGCk3B+MykEPCtlIkXLMAQ/Xyzz1rtqQIhAJcQ
+TsGqMYeVzzZqZcAk8FBjNLZupTBCYdOGgp/zYe6D
 -----END RSA PRIVATE KEY-----
-	`)
+		`)
+	// 	c, err := NewClient("https://api.dev.blingok.com/", "2997881988", `
+	// -----BEGIN RSA PRIVATE KEY-----
+	// MIIBOQIBAAJBAL8uDrM5k2PmcF0uoTuSeqjoLQY9+KACateV/cXJMWaAoLlP33e7
+	// hiLQyUR8W+UbkSF6II68IlG46uw1mO8DhYsCAwEAAQJAIVt87yKtp/GuS2P2d/l/
+	// 83bHXF51wh2J3OHr7JXFS9f6dGeAlaaRO0++uuGRKtc7GihfiMM+HY4U6UOsVtBh
+	// sQIhAOTKz6x4iOM5KlUz1oION8EvvuZx1fhBMBnkdwNHq13JAiEA1eo0D1SOvaVe
+	// f9OobKWbNhEhV8Xt0tNM63ZHyJL6YrMCIHk+aPNzJMeVQbPJNsHRGwbLcJTaepOG
+	// qCDwi4k3b77RAiA/x3iGKZv1h1zJl/3bhvTkBe9/EBB8j2ubuMRmVQw6aQIge0Xv
+	// XhrQu1yXaWrSMFJn20pzj5+yg1WUYM1b2x3Cyv0=
+	// -----END RSA PRIVATE KEY-----
+	// 		`)
 	if err != nil {
 		panic(err)
 	}
@@ -24,21 +36,27 @@ AMwIiwqeF1bG6yS8/dwtDkjblV64Z1KhHnWuLXLDq8cd
 
 func TestClient_Login(t *testing.T) {
 	c := testNewClient()
-	v, err := c.Login("M3aLsz4tPB_0218")
+	v, err := c.Login("testM3aLsz4tPB_0218")
 	fmt.Println(err)
 	fmt.Println(v)
 }
 
 func TestClient_SetUser(t *testing.T) {
 	c := testNewClient()
-	v, err := c.SetUser("M3aLsz4tPB_0218", "迅德研发测试")
+	v, err := c.SetUser("1", "宠物老板测试门店")
+	fmt.Println(err)
+	fmt.Println(v)
+}
+func TestClient_ListOrder(t *testing.T) {
+	c := testNewClient()
+	v, err := c.ListOrder(1)
 	fmt.Println(err)
 	fmt.Println(v)
 }
 
 func TestClient_rsaDecrypt(t *testing.T) {
 	c := testNewClient()
-	v, err := c.rsaDecrypt("b863044e1244f2e0ce5e6a7fa4948fe689d3827cbf4d9e4d0db9dab3db153ca40bcafa9c4ed1e9db717c3942709e46660a39602829fa53b25ad57faf380bb324")
+	v, err := c.rsaDecrypt("6b481592752118f673b7dfaa2620525f6b6a0ea2ddba0c71731a3f674d0e364583725fe00d62f3ee2858af948185781121be31ffbe9586e081dd6d44b8e8e095")
 	fmt.Println(err)
 	fmt.Println(v)
 }

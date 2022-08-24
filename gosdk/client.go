@@ -13,6 +13,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"reflect"
 	"strings"
@@ -124,6 +125,34 @@ func (c *Client) SetUser(openId, nickname string) (resp *model.SetUserResp, err 
 	return
 }
 
+func (c *Client) ListOrder(page int) (resp *model.ListOrderResp, err error) {
+	url := fmt.Sprintf("%s/%s", c.baseurl, "merchant/order/list")
+	httpClient := &http.Client{}
+	var bts []byte
+	if bts, err = c.marshal(&model.ListOrderArgs{
+		Mid:       c.mid,
+		Timestamp: time.Now().Unix(),
+		Page:      int64(page),
+		Sign:      "",
+	}); err != nil {
+		return
+	}
+	var response *http.Response
+	var req *http.Request
+	if req, err = http.NewRequest("POST", url, bytes.NewReader(bts)); err != nil {
+		return
+	}
+	req = req.WithContext(c.ctx)
+	if response, err = httpClient.Do(req); err != nil {
+		return
+	}
+	resp = &model.ListOrderResp{}
+	if err = c.unmarshal(response, resp); err != nil {
+		return
+	}
+	return
+}
+
 func (c *Client) unmarshal(response *http.Response, out interface{}) error {
 	if response.StatusCode != 200 {
 		var ret struct {
@@ -135,6 +164,8 @@ func (c *Client) unmarshal(response *http.Response, out interface{}) error {
 		}
 		return errors.New(fmt.Sprintf("%d: %s", ret.Code, ret.Message))
 	}
+	all, _ := io.ReadAll(response.Body)
+	fmt.Println(string(all))
 	if err := json.NewDecoder(response.Body).Decode(out); err != nil {
 		return err
 	}
@@ -154,9 +185,11 @@ func (c *Client) marshal(data interface{}) ([]byte, error) {
 			continue
 		}
 		val := refVal.Field(i).Interface()
-		souce += fmt.Sprintf("%s", val)
+		souce += fmt.Sprintf("%v", val)
 	}
 	sign, err := c.signWithSha256(souce)
+	fmt.Println("souce: ", souce)
+	fmt.Println("sign: ", sign)
 	if err != nil {
 		return nil, err
 	}

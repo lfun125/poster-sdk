@@ -31,3 +31,26 @@ type SetUserResp struct {
 	// 用户在猫盒的唯一id
 	Id int `json:"id,string,omitempty"`
 }
+
+type ListOrderArgs struct {
+	// 商户id
+	Mid       string `json:"mid,omitempty"`
+	Timestamp int64  `json:"timestamp,omitempty,string"`
+	Page      int64  `json:"page,omitempty,string"`
+	Sign      string `json:"sign,omitempty"`
+}
+
+type ListOrderResp struct {
+	Page  int64    `json:"page,omitempty,string"`
+	Count int64    `json:"count,omitempty,string"`
+	List  []*Order `json:"list,omitempty"`
+}
+
+type Order struct {
+	Amount        int64  `json:"amount,omitempty,string"`
+	OpenId        string `json:"open_id,omitempty"`
+	OrderId       string `json:"order_id,omitempty"`
+	PayOrderId    string `json:"pay_order_id,omitempty"`
+	PaymentMethod int64  `json:"payment_method"`
+	PaymentTime   int64  `json:"payment_time,omitempty,string"`
+}
