@@ -13,7 +13,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"reflect"
 	"strings"
@@ -164,8 +163,6 @@ func (c *Client) unmarshal(response *http.Response, out interface{}) error {
 		}
 		return errors.New(fmt.Sprintf("%d: %s", ret.Code, ret.Message))
 	}
-	all, _ := io.ReadAll(response.Body)
-	fmt.Println(string(all))
 	if err := json.NewDecoder(response.Body).Decode(out); err != nil {
 		return err
 	}
